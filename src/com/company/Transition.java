@@ -52,7 +52,7 @@ public class Transition {
                         searchIndex = nextSpace[searchIndex]; // If a jump is defined, then jump
                     } else {
                         nextSpace[searchIndex] = index; // Set the link to be the end of our array
-                    }
+                    } //
                 }
             } else {
 
