@@ -10,8 +10,16 @@ public class Main {
     public static int max_transition = 1000; // Size of arrays
 
     public static void main(String[] args) {
+        System.out.println("test launch");
         ArrayList<Integer> lineSpace = new ArrayList<Integer>();
-        try {
+        Transition test = new Transition();
+        test.parse("tony");
+        test.parse("tonytime");
+        test.parse("tonytable");
+        test.parse("tonytaple");
+        test.printTables(50);
+
+        /*try {
             File first = new File("Proj2_Input1.txt");
             Scanner scan = new Scanner(first);
             int lineCount = 0; // Number of words on this line
@@ -25,8 +33,6 @@ public class Main {
             lineSpace.add(lineCount); // Remember how many words were on this line
         } catch(FileNotFoundException fne) {
             fne.printStackTrace();
-        }
-
-        System.out.println("Hey World");
+        }*/
     }
 }

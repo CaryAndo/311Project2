@@ -35,9 +35,34 @@ public class Transition {
     }
 
     /*
+    * Print the two arrays nicely for debug
+    * */
+    public void printTables(int length) {
+        if (length > 999)
+            length = 1000;
+        System.out.println("\nsymbol: ");
+        for (int i = 0; i < length; i++) {
+            System.out.print("  " + symbol[i]);
+        }
+        System.out.println("\nnext: ");
+        for (int i = 0; i < length; i++) {
+            if (nextSpace[i] < 0)
+                System.out.print(" " + nextSpace[i]);
+            else
+                System.out.print(" +" + nextSpace[i]);
+        }
+    }
+
+    /*
     * Build the internal tables given words
     * */
     public void parse(String input) {
+        if (input == null) {
+            System.out.println("Error, passed null");
+            return;
+        }
+        input = input + "@";
+
         if (switcher.containsKey(input.charAt(0))) {
             if (switcher.get(input.charAt(0)) == -1) {
                 switcher.put(input.charAt(0), index); // Save starting point
@@ -45,16 +70,19 @@ public class Transition {
             int searchIndex = switcher.get(input.charAt(0));
             if (input.toCharArray().length > 1) {
                 for (int i = 1; i < input.toCharArray().length; i++) {
-                    if (input.charAt(i) == symbol[searchIndex]) {
+                    System.out.println("Looking for " + input.charAt(i) + i);
+                    if (symbol[searchIndex] == '!') {
+                        symbol[searchIndex] = input.charAt(i); // If the symbol is empty then write to it
+                        index++;
                         searchIndex++;
-                        continue; // They match, everything okay.
-                    } else if (true) {
-
+                    } else if (input.charAt(i) == symbol[searchIndex]) {
+                        searchIndex++; // If the symbols match, all is well continue on
                     } else if (nextSpace[searchIndex] != -1) {
                         searchIndex = nextSpace[searchIndex]; // If a jump is defined, then jump
-                        i--; // Do this iteration over again after the link has been made
+                        i--; // Do this iteration over again after we have jumped to the link
                     } else {
                         nextSpace[searchIndex] = index; // Set the link to be the end of our symbol array
+                        System.out.println("Set current next to: " + index);
                         searchIndex = index; // Set the symbol index to be the end of the array (should be empty)
                         symbol[searchIndex] = input.charAt(i); // Set the empty space to be our character
                         index++; // Increment the end of the array
@@ -62,6 +90,10 @@ public class Transition {
                     }
                 }
             } else {
+                /*
+                * Else search for the end of the single letter identifier
+                * TODO Examine this logic later
+                * */
                 while (symbol[searchIndex] != '@') {
                     if (nextSpace[searchIndex] != -1) {
                         searchIndex = nextSpace[searchIndex]; // Follow the link
