@@ -48,14 +48,31 @@ public class Transition {
                     if (input.charAt(i) == symbol[searchIndex]) {
                         searchIndex++;
                         continue; // They match, everything okay.
+                    } else if (true) {
+
                     } else if (nextSpace[searchIndex] != -1) {
                         searchIndex = nextSpace[searchIndex]; // If a jump is defined, then jump
+                        i--; // Do this iteration over again after the link has been made
                     } else {
-                        nextSpace[searchIndex] = index; // Set the link to be the end of our array
-                    } //
+                        nextSpace[searchIndex] = index; // Set the link to be the end of our symbol array
+                        searchIndex = index; // Set the symbol index to be the end of the array (should be empty)
+                        symbol[searchIndex] = input.charAt(i); // Set the empty space to be our character
+                        index++; // Increment the end of the array
+                        searchIndex++; // Increment the symbol index
+                    }
                 }
             } else {
-
+                while (symbol[searchIndex] != '@') {
+                    if (nextSpace[searchIndex] != -1) {
+                        searchIndex = nextSpace[searchIndex]; // Follow the link
+                    } else {
+                        nextSpace[searchIndex] = index; // Set the link to be the end of our symbol array
+                        searchIndex = index; // Set the symbol index to be the end of the array (should be empty)
+                        symbol[searchIndex] = '@'; // Set the empty space at the end of symbol to be a terminator
+                        index++;
+                        searchIndex++;
+                    }
+                }
             }
         } else {
             System.out.println("Invalid character: " + input.charAt(0));
