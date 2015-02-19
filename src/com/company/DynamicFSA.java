@@ -58,16 +58,19 @@ public class DynamicFSA {
 
     public String process(String input) {
         String ret = "";
+        boolean start = true;
+
         if (input == null) {
             System.out.println("Error, passed null");
             return null;
         }
 
-        // Screen for bad characters
-        for (char c : input.toCharArray()) {
-            if (!"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_$".contains(""+c)) {
-                System.out.println("ERROR, string contains an invalid character: " + c);
-                return null;
+        for (int i = 0; i < input.length(); i++) {
+            if (start) {
+
+                start = false;
+            } else {
+                start = true;
             }
         }
 
