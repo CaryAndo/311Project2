@@ -3,7 +3,6 @@ package com.company;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -12,27 +11,55 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("test launch");
         ArrayList<Integer> lineSpace = new ArrayList<Integer>();
-        Transition test = new Transition();
-        test.parse("tony");
+        DynamicFSA test = new DynamicFSA();
+        /*test.parse("tony");
         test.parse("tonytime");
         test.parse("tonytable");
         test.parse("tonytaple");
-        test.printTables(50);
+        test.parse("t");
+        test.parse("a");
+        test.parse("app");
 
-        /*try {
+        test.printTables(50);
+*/
+        // Build the transition table with the Java reserved words
+        try {
             File first = new File("Proj2_Input1.txt");
             Scanner scan = new Scanner(first);
             int lineCount = 0; // Number of words on this line
             while (scan.hasNext()) {
-                String[] line = scan.nextLine().split("\\s");
+                String[] line = scan.nextLine().split("[\\s.]");
                 for (String s : line) {
                     System.out.println(s);
+                    test.parse(s);
                 }
+                lineCount++;
+            }
+            //lineSpace.add(lineCount); // Remember how many words were on this line
+        } catch(FileNotFoundException fne) {
+            fne.printStackTrace();
+        }
+        test.printTables(200);
+
+        try {
+            File first = new File("Proj2_Input2.txt");
+            Scanner scan = new Scanner(first);
+            int lineCount = 0; // Number of words on this line
+            while (scan.hasNext()) {
+                String line = scan.nextLine();
+                if (line.length() > 1)
+                    System.out.println(line);
+                /*String[] line = scan.nextLine().split("[\\s.]");
+                for (String s : line) {
+                    if (s.length() > 1)
+                        System.out.println(s);
+                    //test.parse(s);
+                }*/
                 lineCount++;
             }
             lineSpace.add(lineCount); // Remember how many words were on this line
         } catch(FileNotFoundException fne) {
             fne.printStackTrace();
-        }*/
+        }
     }
 }
