@@ -149,6 +149,41 @@ public class DynamicFSA {
                 }
             }
         }
+        /*
+        * After we reach the end of the line, if we were not finished with a word figure out the terminal character.
+        * */
+        if (!start) {
+            while (symbol[searchIndex] != '*' &&
+                    symbol[searchIndex] != '@' &&
+                    symbol[searchIndex] != '!' &&
+                    symbol[searchIndex] != '?')
+            {
+                if (nextSpace[searchIndex] != -1) {
+                    searchIndex = nextSpace[searchIndex];
+                } else {
+                    nextSpace[searchIndex] = index;
+                    searchIndex = index;
+                }
+            }
+            switch (symbol[searchIndex]) {
+                case '!':
+                    symbol[searchIndex] = '?';
+                    index++;
+                    //searchIndex++;
+                    currentWord += '?';
+                    break;
+                case '@':
+                    currentWord += '@';
+                    break;
+                case '?':
+                    currentWord += '@';
+                    break;
+                case '*':
+                    currentWord += '*';
+                    break;
+            }
+            ret += (currentWord + ' ');
+        }
 
         return ret;
     }
