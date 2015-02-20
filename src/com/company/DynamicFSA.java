@@ -35,6 +35,27 @@ public class DynamicFSA {
         }
     }
 
+    /**
+    * Print all the tables and transitions in a pretty format
+    * */
+    public void print() {
+        String switchString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_$";
+        System.out.print("\nSwitch: ");
+        for (int i = 0; i < switchString.length(); i++) {
+            System.out.print(switchString.charAt(i) + "    ");
+            if ((i > 0 && i % 10 == 0) || i == (switchString.length()-1)) {
+                System.out.print("\nnext:  ");
+                int temp = i-1;
+                while (temp % 10 != 0)
+                    temp--;
+                for (int j = temp; j < i; j++) {
+                    System.out.print(switcher.get(switchString.charAt(j)) + "   ");
+                }
+                System.out.print("\n\nSwitch: ");
+            }
+        }
+    }
+
     /*
     * Print the two arrays nicely for debug
     * */
@@ -59,7 +80,7 @@ public class DynamicFSA {
     /**
      * Process line after parsing keywords
      * @param input A line of code.
-     * @return The parsed line to print.
+     * @return The line containing only keywords with their types appended.
      * TODO Handle end of line.
      */
     public String process(String input) {
