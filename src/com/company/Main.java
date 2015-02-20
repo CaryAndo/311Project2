@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static int max_transition = 1000; // Size of arrays
 
     public static void main(String[] args) {
         ArrayList<Integer> lineSpace = new ArrayList<Integer>();
@@ -25,14 +24,12 @@ public class Main {
         try {
             File first = new File("Proj2_Input1.txt");
             Scanner scan = new Scanner(first);
-            int lineCount = 0; // Number of words on this line
             while (scan.hasNext()) {
                 String[] line = scan.nextLine().split("[\\s.]");
                 for (String s : line) {
                     //System.out.println(s);
                     test.parse(s);
                 }
-                lineCount++;
             }
             //lineSpace.add(lineCount); // Remember how many words were on this line
         } catch(FileNotFoundException fne) {
@@ -42,27 +39,18 @@ public class Main {
 
         System.out.println("\n\nTesting process:");
 
-        System.out.println(test.process("Hello world Hello again world import tony "));
-/*
         try {
-            File first = new File("Proj2_Input2.txt");
-            Scanner scan = new Scanner(first);
+            File second = new File("Proj2_Input2.txt");
+            Scanner scan = new Scanner(second);
             int lineCount = 0; // Number of words on this line
             while (scan.hasNext()) {
                 String line = scan.nextLine();
                 if (line.length() > 1)
                     System.out.println(test.process(line));
-                String[] line = scan.nextLine().split("[\\s.]");
-                for (String s : line) {
-                    if (s.length() > 1)
-                        System.out.println(s);
-                    //test.parse(s);
-                }
-                lineCount++;
             }
             lineSpace.add(lineCount); // Remember how many words were on this line
         } catch(FileNotFoundException fne) {
             fne.printStackTrace();
-        }*/
+        }
     }
 }
