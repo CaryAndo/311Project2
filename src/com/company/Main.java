@@ -2,24 +2,15 @@ package com.company;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<Integer> lineSpace = new ArrayList<Integer>();
-        DynamicFSA test = new DynamicFSA();
-        /*test.parse("tony");
-        test.parse("tonytime");
-        test.parse("tonytable");
-        test.parse("tonytaple");
-        test.parse("t");
-        test.parse("a");
-        test.parse("app");
+        DynamicFSA primary = new DynamicFSA();
 
-        test.printTables(50);
-*/
+        System.out.println("Begin!\n\nLoading keywords:");
+
         // Build the transition table with the Java reserved words
         try {
             File first = new File("Proj2_Input1.txt");
@@ -28,35 +19,29 @@ public class Main {
                 String[] line = scan.nextLine().split("[\\s.]");
                 for (String s : line) {
                     //System.out.println(s);
-                    test.parse(s);
+                    primary.parse(s);
                 }
             }
-            //lineSpace.add(lineCount); // Remember how many words were on this line
-        } catch(FileNotFoundException fne) {
-            fne.printStackTrace();
+        } catch(FileNotFoundException fnfe) {
+            fnfe.printStackTrace();
         }
-        test.printTables(200);
 
-        System.out.println("\n\nTesting process:");
+        System.out.println("\n\nReserve words added, now processing.");
 
         try {
             File second = new File("Proj2_Input2.txt");
             Scanner scan = new Scanner(second);
-            int lineCount = 0; // Number of words on this line
             while (scan.hasNext()) {
                 String line = scan.nextLine();
                 if (line.length() > 1)
-                    System.out.println(test.process(line));
+                    System.out.println(primary.process(line));
             }
-            lineSpace.add(lineCount); // Remember how many words were on this line
         } catch(FileNotFoundException fne) {
             fne.printStackTrace();
         }
 
         System.out.println("\nPrinting internal tables: ");
 
-        test.print(16);
-
-        System.out.println("\n\n" + test.switcher.get('v'));
+        primary.print(8);
     }
 }

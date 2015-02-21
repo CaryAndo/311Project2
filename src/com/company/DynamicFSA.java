@@ -8,10 +8,10 @@ import java.util.HashMap;
  */
 public class DynamicFSA {
 
-    public HashMap<Character, Integer> switcher = new HashMap<Character, Integer>();
-    public char[] symbol = new char[1000];
-    public int[] nextSpace = new int[1000];
-    public int index = 0;
+    private HashMap<Character, Integer> switcher = new HashMap<Character, Integer>();
+    private char[] symbol = new char[1000];
+    private int[] nextSpace = new int[1000];
+    private int index = 0;
 
     public DynamicFSA() {
         char lowerCase = 'a';
@@ -40,6 +40,9 @@ public class DynamicFSA {
      *  @param itemsPerLine The number of table entries to print per line.
      */
     public void print(int itemsPerLine) {
+        /*
+        * First print out the switch
+        * */
         String switchString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_$";
         System.out.print("\nSwitch:  ");
         for (int i = 0; i < switchString.length(); i++) {
@@ -69,26 +72,11 @@ public class DynamicFSA {
             if (i == switchString.length()-1) {
                 System.out.print(switchString.charAt(i) + "    ");
 
-                System.out.print("\n       ");
+                System.out.print("\n      ");
                 int temp = i - 1;
                 while (temp % itemsPerLine != 0)
                     temp--;
                 for (int j = temp; j <= i; j++) {
-                    System.out.print(switcher.get(switchString.charAt(j)) + "   ");
-                }
-            } else {
-                System.out.print(switchString.charAt(i) + "    ");
-            }
-        }
-
-/*
-        for (int i = 0; i < symbol.length; i++) {
-            if ((i > 0 && i % itemsPerLine == 0)) {
-                System.out.print("\nnext: ");
-                int temp = i - 1;
-                while (temp % itemsPerLine != 0)
-                    temp--;
-                for (int j = temp; j < i; j++) {
                     String leftSpace;
                     String rightSpace;
                     if (switcher.get(switchString.charAt(j)) > 100) {
@@ -103,44 +91,76 @@ public class DynamicFSA {
                     }
                     System.out.print(leftSpace + switcher.get(switchString.charAt(j)) + rightSpace);
                 }
-                System.out.print("\n\nSwitch: ");
+            } else {
+                System.out.print(switchString.charAt(i) + "    ");
+            }
+        }
+        /*
+        * Next print out the symbol and the next arrays
+        * */
+        System.out.print("\n\nSymbol: ");
+        for (int i = 0; i < lastSymbolIndex(); i++) {
+            if ((i > 0 && i % itemsPerLine == 0)) {
+                System.out.print("\nnext: ");
+                int temp = i - 1;
+                while (temp % itemsPerLine != 0)
+                    temp--;
+                for (int j = temp; j < i; j++) {
+                    String leftSpace;
+                    String rightSpace;
+                    if (nextSpace[j] > 100) {
+                        leftSpace = "  ";
+                        rightSpace = "";
+                    } else if (nextSpace[j] > 10 || nextSpace[j] < 0) {
+                        leftSpace = "  ";
+                        rightSpace = " ";
+                    } else {
+                        leftSpace = "  ";
+                        rightSpace = "  ";
+                    }
+                    if (nextSpace[j] == -1)
+                        System.out.print(leftSpace + "  " + rightSpace);
+                    else
+                        System.out.print(leftSpace + nextSpace[j] + rightSpace);
+                }
+                System.out.print("\n\nSymbol: ");
             }
 
-            if (i == switchString.length()-1) {
-                System.out.print(switchString.charAt(i) + "    ");
+            if (i == lastSymbolIndex()-1) {
+                System.out.print(symbol[i] + "    ");
 
                 System.out.print("\nnext:  ");
                 int temp = i - 1;
                 while (temp % itemsPerLine != 0)
                     temp--;
                 for (int j = temp; j <= i; j++) {
-                    System.out.print(switcher.get(switchString.charAt(j)) + "   ");
+                    //System.out.print(nextSpace[j] + "   ");
+                    if (nextSpace[j] == -1)
+                        System.out.print("     " );
+                    else
+                        System.out.print(nextSpace[j]+ "   ");
                 }
             } else {
-                System.out.print(switchString.charAt(i) + "    ");
+                System.out.print(symbol[i] + "    ");
             }
-        }*/
+        }
+
+        System.out.println("\n\nFinished! ");
+        System.out.println("Empty table spaces remaining: " + (symbol.length - lastSymbolIndex()));
     }
 
     /*
-    * Print the two arrays nicely for debug
+    * The index where the last symbol is in the symbol array
     * */
-    public void printTables(int length) {
-        //convertToAt();
-        if (length > 999)
-            length = 1000;
-        System.out.println("\nsymbol: ");
-        for (int i = 0; i < length; i++) {
-            System.out.print("  " + symbol[i]);
+    private int lastSymbolIndex() {
+        int counter = 0;
+        for (char c : symbol) {
+            if (c == '!') {
+                return counter;
+            }
+            counter++;
         }
-        System.out.println("\nnext: ");
-        for (int i = 0; i < length; i++) {
-            if (nextSpace[i] < 0 || nextSpace[i] > 9)
-                System.out.print(" " + nextSpace[i]);
-            else
-                System.out.print(" +" + nextSpace[i]);
-        }
-        //convertToStar();
+        return symbol.length;
     }
 
     /**
