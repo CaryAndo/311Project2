@@ -52,12 +52,11 @@ public class Main {
         } catch(FileNotFoundException fne) {
             fne.printStackTrace();
         }
-        test.process("zed");
 
-        System.out.println("END,\n Index: " + test.index);
+        System.out.println("\nPrinting internal tables: ");
 
-        test.print();
+        test.print(16);
 
-        System.out.println("" + test.switcher.get('z'));
+        System.out.println("\n\n" + test.switcher.get('v'));
     }
 }

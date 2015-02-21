@@ -36,24 +36,90 @@ public class DynamicFSA {
     }
 
     /**
-    * Print all the tables and transitions in a pretty format
-    * */
-    public void print() {
+     *  Print all the tables and transitions in a pretty format
+     *  @param itemsPerLine The number of table entries to print per line.
+     */
+    public void print(int itemsPerLine) {
         String switchString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_$";
-        System.out.print("\nSwitch: ");
+        System.out.print("\nSwitch:  ");
         for (int i = 0; i < switchString.length(); i++) {
-            System.out.print(switchString.charAt(i) + "    ");
-            if ((i > 0 && i % 10 == 0) || i == (switchString.length()-1)) {
-                System.out.print("\nnext:  ");
-                int temp = i-1;
-                while (temp % 10 != 0)
+            if ((i > 0 && i % itemsPerLine == 0)) {
+                System.out.print("\n      ");
+                int temp = i - 1;
+                while (temp % itemsPerLine != 0)
                     temp--;
                 for (int j = temp; j < i; j++) {
-                    System.out.print(switcher.get(switchString.charAt(j)) + "   ");
+                    String leftSpace;
+                    String rightSpace;
+                    if (switcher.get(switchString.charAt(j)) > 100) {
+                        leftSpace = "  ";
+                        rightSpace = "";
+                    } else if (switcher.get(switchString.charAt(j)) > 10 || switcher.get(switchString.charAt(j)) < 0) {
+                        leftSpace = "  ";
+                        rightSpace = " ";
+                    } else {
+                        leftSpace = "  ";
+                        rightSpace = "  ";
+                    }
+                    System.out.print(leftSpace + switcher.get(switchString.charAt(j)) + rightSpace);
                 }
                 System.out.print("\n\nSwitch: ");
             }
+
+            if (i == switchString.length()-1) {
+                System.out.print(switchString.charAt(i) + "    ");
+
+                System.out.print("\n       ");
+                int temp = i - 1;
+                while (temp % itemsPerLine != 0)
+                    temp--;
+                for (int j = temp; j <= i; j++) {
+                    System.out.print(switcher.get(switchString.charAt(j)) + "   ");
+                }
+            } else {
+                System.out.print(switchString.charAt(i) + "    ");
+            }
         }
+
+/*
+        for (int i = 0; i < symbol.length; i++) {
+            if ((i > 0 && i % itemsPerLine == 0)) {
+                System.out.print("\nnext: ");
+                int temp = i - 1;
+                while (temp % itemsPerLine != 0)
+                    temp--;
+                for (int j = temp; j < i; j++) {
+                    String leftSpace;
+                    String rightSpace;
+                    if (switcher.get(switchString.charAt(j)) > 100) {
+                        leftSpace = "  ";
+                        rightSpace = "";
+                    } else if (switcher.get(switchString.charAt(j)) > 10 || switcher.get(switchString.charAt(j)) < 0) {
+                        leftSpace = "  ";
+                        rightSpace = " ";
+                    } else {
+                        leftSpace = "  ";
+                        rightSpace = "  ";
+                    }
+                    System.out.print(leftSpace + switcher.get(switchString.charAt(j)) + rightSpace);
+                }
+                System.out.print("\n\nSwitch: ");
+            }
+
+            if (i == switchString.length()-1) {
+                System.out.print(switchString.charAt(i) + "    ");
+
+                System.out.print("\nnext:  ");
+                int temp = i - 1;
+                while (temp % itemsPerLine != 0)
+                    temp--;
+                for (int j = temp; j <= i; j++) {
+                    System.out.print(switcher.get(switchString.charAt(j)) + "   ");
+                }
+            } else {
+                System.out.print(switchString.charAt(i) + "    ");
+            }
+        }*/
     }
 
     /*
